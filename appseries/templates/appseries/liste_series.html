@@ -1,0 +1,54 @@
+{% extends 'appseries/base.html' %}
+
+{% load extra_tags %}
+
+{% block title %}Liste des séries{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center bg-dark text-warning mb-0">{{ titre }}</h1>
+    <table class="table table-striped table-hover">
+        <thead class="bg-warning text-dark">
+            <tr class="">
+                <th scope="col">
+                    <h4>Titre</h4>
+                </th>
+                <th scope="col" class="text-center">
+                    <h4>Episode</h4>
+                </th>
+                <th scope="col" class="text-center">
+                    <h4>Date</h4>
+                </th>
+            </tr>
+        </thead>
+        {% for serie in series %}
+            <tr class="{% if serie.status == 'terminated' %}
+                            font-italic text-muted
+                       {% endif %}">
+                <td class="
+                    {% if serie.status != 'terminated' %}
+                            lead
+                       {% endif %}">
+                    {{ serie.title }}
+                </td>
+                 <td class="text-muted text-center">
+                     {% if serie.status == 'running' or serie.status == 'announced' %}
+                     <small>
+                    {% seasep serie.season serie.episode %}
+                     </small>
+                     {% endif %}
+                </td>
+                 <td class="text-center
+                    {% if serie.status == 'announced' %}
+                        font-weight-bold text-primary
+                    {% elif serie.status == 'running' %}
+                        font-weight-bold text-success
+                    {% endif %}">
+                    {% show_date serie.airing_date serie.status %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock body%}
